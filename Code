@@ -1,0 +1,88 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the data from CSV
+# Adjust the filename to the path where your CSV file is located
+file_path = r"C:\Users\zsoha\OneDrive\Desktop\big_tech_stock_prices.csv"
+df = pd.read_csv(file_path)
+
+# Display the first few rows of the dataset
+print("First few rows of the dataset:")
+print(df.head())
+
+# Display summary statistics
+print("\nSummary statistics:")
+print(df.describe())
+
+# Convert 'date' column to datetime
+# Date is in ISO format (YYYY-MM-DD), so no need to specify the format
+df['date'] = pd.to_datetime(df['date'])
+
+# Set 'date' column as the index
+df.set_index('date', inplace=True)
+
+# Display the data types and null values
+print("\nData types and null values:")
+print(df.info())
+
+# Plot the stock's closing price over time
+plt.figure(figsize=(12, 6))
+plt.plot(df.index, df['close'], label='Close Price', color='blue')
+plt.title('AAPL Stock Closing Price Over Time')
+plt.xlabel('Date')
+plt.ylabel('Close Price')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# Plot the stock's volume over time
+plt.figure(figsize=(12, 6))
+plt.bar(df.index, df['volume'], color='gray', alpha=0.5)
+plt.title('AAPL Stock Trading Volume Over Time')
+plt.xlabel('Date')
+plt.ylabel('Volume')
+plt.grid(True)
+plt.show()
+
+# Plot the correlation heatmap
+correlation_matrix = df[['open', 'high', 'low', 'close', 'adj_close', 'volume']].corr()
+plt.figure(figsize=(10, 8))
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', vmin=-1, vmax=1)
+plt.title('Correlation Heatmap')
+plt.show()
+
+# Compute moving averages
+df['SMA_20'] = df['close'].rolling(window=20).mean()
+df['SMA_50'] = df['close'].rolling(window=50).mean()
+
+# Plot closing price and moving averages
+plt.figure(figsize=(12, 6))
+plt.plot(df.index, df['close'], label='Close Price', color='blue', alpha=0.5)
+plt.plot(df.index, df['SMA_20'], label='20-Day SMA', color='red', alpha=0.75)
+plt.plot(df.index, df['SMA_50'], label='50-Day SMA', color='green', alpha=0.75)
+plt.title('AAPL Stock Price and Moving Averages')
+plt.xlabel('Date')
+plt.ylabel('Price')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# Calculate the daily returns
+df['daily_return'] = df['close'].pct_change()
+
+# Plot the daily returns
+plt.figure(figsize=(12, 6))
+plt.plot(df.index, df['daily_return'], label='Daily Return', color='purple', alpha=0.5)
+plt.title('AAPL Daily Returns')
+plt.xlabel('Date')
+plt.ylabel('Daily Return')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# Print the average daily return and volatility
+average_daily_return = df['daily_return'].mean()
+volatility = df['daily_return'].std()
+print(f"\nAverage Daily Return: {average_daily_return:.5f}")
+print(f"Volatility: {volatility:.5f}")
