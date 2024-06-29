@@ -1,5 +1,5 @@
 # Stock-Price-Analysis
-Welcome to the **Stock Price Analysis** project! This repository contains a Python-based analysis of historical stock price data. The project includes data cleaning, statistical analysis, and various visualizations to help understand trends, relationships, and performance metrics of AAPL stock.
+Welcome to the **Stock Price Analysis** project! This repository contains a Python-based analysis of historical stock price data. The project includes data cleaning, statistical analysis, and various visualizations to help understand trends, relationships, and performance metrics of stocks.
 
 In this project, you will find code to perform the following tasks:
 
